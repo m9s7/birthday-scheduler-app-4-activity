@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>700985298955-93u6nvfk2an2eqa05v7gnoeqcftsfs3b.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.700985298955-93u6nvfk2an2eqa05v7gnoeqcftsfs3b</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC1wy446dUWf_r9i7M6_uCIrgzAGtitnyE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>700985298955</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.birthdayScheduler</string>
+	<key>PROJECT_ID</key>
+	<string>birthday-scheduler-4-activity</string>
+	<key>STORAGE_BUCKET</key>
+	<string>birthday-scheduler-4-activity.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:700985298955:ios:6c0a07e0cb5287c142770e</string>
+</dict>
+</plist>

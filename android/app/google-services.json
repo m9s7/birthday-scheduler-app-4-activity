@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "700985298955",
+    "project_id": "birthday-scheduler-4-activity",
+    "storage_bucket": "birthday-scheduler-4-activity.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:700985298955:android:8d26f28d11b0727342770e",
+        "android_client_info": {
+          "package_name": "com.example.birthday_scheduler"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "700985298955-7amlgga3jvdej4qgs32cl911hf02e3em.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.birthday_scheduler",
+            "certificate_hash": "b38dfc8718e04d145c7b6ad29fc42d7ec4245726"
+          }
+        },
+        {
+          "client_id": "700985298955-aa95tfvdu6uqpj9dbvvl62kvb3k3jb5s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-QfCw08m0KtAyDZTsz_WhWpHsei2P5vc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "700985298955-aa95tfvdu6uqpj9dbvvl62kvb3k3jb5s.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "700985298955-93u6nvfk2an2eqa05v7gnoeqcftsfs3b.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.birthdayScheduler"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
