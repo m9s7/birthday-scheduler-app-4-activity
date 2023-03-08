@@ -1,5 +1,6 @@
 import 'package:birthday_scheduler/core/common/error_text.dart';
 import 'package:birthday_scheduler/core/common/loader.dart';
+import 'package:birthday_scheduler/core/utils.dart';
 import 'package:birthday_scheduler/features/auth/controller/auth_controller.dart';
 import 'package:birthday_scheduler/models/user_model.dart';
 import 'package:birthday_scheduler/router.dart';
@@ -44,6 +45,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   Widget build(BuildContext context) {
     return ref.watch(authStateChangeProvider).when(
           data: (data) => MaterialApp.router(
+            scaffoldMessengerKey: scaffoldMessengerKey,
             debugShowCheckedModeBanner: false,
             title: 'Birthday Scheduler',
             theme: Pallete.darkModeAppTheme,
