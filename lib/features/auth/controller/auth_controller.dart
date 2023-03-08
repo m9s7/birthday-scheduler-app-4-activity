@@ -40,12 +40,16 @@ class AuthController extends StateNotifier<bool> {
     final user = await _authRepository.signInWithGoogle();
     state = false;
     user.fold(
-        (l) => showSnackBar(context, l.message),
+        (error) => showSnackBar(context, error.message),
         (userModel) =>
             _ref.read(userProvider.notifier).update((state) => userModel));
   }
 
   Stream<UserModel> getUserData(String uid) {
     return _authRepository.getUserData(uid);
+  }
+
+  void logout() async {
+    _authRepository.logOut();
   }
 }
