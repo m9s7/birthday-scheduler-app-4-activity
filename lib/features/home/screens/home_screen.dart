@@ -2,12 +2,17 @@ import 'package:birthday_scheduler/features/auth/controller/auth_controller.dart
 import 'package:birthday_scheduler/features/home/drawers/general_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:routemaster/routemaster.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   void displayDrawer(BuildContext context) {
     Scaffold.of(context).openDrawer();
+  }
+
+  void navigateToScheduleBirthday(BuildContext context) {
+    Routemaster.of(context).push('schedule_bday');
   }
 
   @override
@@ -32,7 +37,7 @@ class HomeScreen extends ConsumerWidget {
             icon: CircleAvatar(
               backgroundImage: NetworkImage(user.profilePic),
             ),
-            onPressed: () {},
+            onPressed: null,
           )
         ],
       ),
@@ -40,6 +45,10 @@ class HomeScreen extends ConsumerWidget {
         child: Text(user.name),
       ),
       drawer: const GeneralDrawer(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => navigateToScheduleBirthday(context),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

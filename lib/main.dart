@@ -13,7 +13,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
 import 'firebase_options.dart';
 
+import 'package:intl/date_symbol_data_local.dart';
+
 void main() async {
+  await initializeDateFormatting('sr_Latn', null);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

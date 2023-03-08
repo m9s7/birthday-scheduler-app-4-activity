@@ -9,10 +9,16 @@ class GeneralDrawer extends ConsumerWidget {
     return Drawer(
       child: SafeArea(
           child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           ListTile(
             title: const Text("Additional features"),
             leading: const Icon(Icons.work_history_outlined),
+            onTap: () {},
+          ),
+          ListTile(
+            title: const Text("Log out"),
+            leading: const Icon(Icons.logout, color: Colors.red),
             onTap: () {},
           )
         ],
