@@ -65,9 +65,11 @@ class BirthdayController extends StateNotifier<bool> {
 
     final res = await _birthdayRepository.scheduleBirthday(birthday);
     state = false;
-    res.fold((error) => showSnackBar(context, error.message), (r) {
-      showSnackBar(context, "Rodjendan uspesno zakazan!");
+    res.fold((error) {
+      showSnackBar(context, error.message);
+    }, (success) {
       Routemaster.of(context).pop();
+      showSnackBar(context, "Rodjendan uspesno zakazan!");
     });
   }
 }
