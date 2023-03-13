@@ -8,7 +8,6 @@ import 'package:birthday_scheduler/features/schedule_birthday/widgets/card.dart'
 import 'package:birthday_scheduler/theme/pallete.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:routemaster/routemaster.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -119,8 +118,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   data: (birthdays) => ListView.builder(
                     itemCount: birthdays.length,
                     itemBuilder: (BuildContext context, int index) {
-                      // print(birthdays[index].childsName);
-                      // print(birthdays[index].finalized);
                       return BirthdayCard(bday: birthdays[index]);
                     },
                   ),
@@ -132,7 +129,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ],
       ),
-      drawer: const GeneralDrawer(),
+      drawer: GeneralDrawer(isAuthenticated: user.isAuthenticated),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Pallete.blueColor,
         onPressed: () => navigateToScheduleBirthday(

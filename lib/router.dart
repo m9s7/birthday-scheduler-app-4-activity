@@ -1,3 +1,4 @@
+import 'package:birthday_scheduler/features/admin/admin_panel.dart';
 import 'package:birthday_scheduler/features/auth/screen/login_screen.dart';
 import 'package:birthday_scheduler/features/home/screens/home_screen.dart';
 import 'package:birthday_scheduler/features/schedule_birthday/screens/schedule_birthday_screen.dart';
@@ -19,4 +20,5 @@ final loggedInRoute = RouteMap(routes: {
           id: routeData.pathParameters['id']!,
         ),
       ),
+  '/admin': (_) => const MaterialPage(child: AdminPanel()),
 });

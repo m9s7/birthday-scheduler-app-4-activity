@@ -1,12 +1,18 @@
 import 'package:birthday_scheduler/features/auth/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:routemaster/routemaster.dart';
 
 class GeneralDrawer extends ConsumerWidget {
-  const GeneralDrawer({super.key});
+  final bool isAuthenticated;
+  const GeneralDrawer({super.key, required this.isAuthenticated});
 
   void logOut(WidgetRef ref) {
     ref.read(authControllerProvider.notifier).logout();
+  }
+
+  void navigateToAdminPanel(BuildContext context) {
+    Routemaster.of(context).push('admin');
   }
 
   @override
@@ -16,11 +22,12 @@ class GeneralDrawer extends ConsumerWidget {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          // ListTile(
-          //   title: const Text("Dodatne informacije"),
-          //   leading: const Icon(Icons.work_history_outlined),
-          //   onTap: () {},
-          // ),
+          if (isAuthenticated)
+            ListTile(
+              title: const Text("Autorizovana lista"),
+              leading: const Icon(Icons.work_history_outlined),
+              onTap: () => navigateToAdminPanel(context),
+            ),
           ListTile(
             title: const Text("Izloguj se"),
             leading: const Icon(Icons.logout, color: Colors.red),

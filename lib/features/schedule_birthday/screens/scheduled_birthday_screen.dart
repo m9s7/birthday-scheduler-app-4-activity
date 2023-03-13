@@ -62,10 +62,6 @@ class _ScheduledBirthdayScreenState
     getBdayFromFirebase();
   }
 
-  //TODO:
-  // napravi da ako je finalized nepojavljuju ti se vise dugmici za delete i edit
-
-  // Puca mi ceo kurac za provider-e
   Future<void> getBdayFromFirebase() async {
     final CollectionReference bdayCollection = FirebaseFirestore.instance
         .collection(FirebaseConstants.birthdaysCollection);
