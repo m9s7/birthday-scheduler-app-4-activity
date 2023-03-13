@@ -46,33 +46,29 @@ class AuthRepository {
         idToken: googleAuth?.idToken,
       );
 
-// Check if user is authorized
+      // Check if user is authorized
       final QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection(FirebaseConstants.authorizedUsersCollection)
           .where('email', isEqualTo: googleUser?.email)
           .get();
       if (snapshot.docs.isEmpty) {
         await _googleSignIn.signOut();
-        return left(
-            Failure('You are not authorized to use this Activity app.'));
+        return left(Failure('Niste autorizovani da koristite ovu aplikaciju.'));
       }
 
       UserCredential userCredential =
           await _auth.signInWithCredential(credential);
 
-      print(userCredential.user?.email);
-
       UserModel userModel;
 
-      print(userCredential.additionalUserInfo!.isNewUser);
       if (userCredential.additionalUserInfo!.isNewUser) {
         userModel = UserModel(
           name: userCredential.user!.displayName ?? "No Name",
           email: userCredential.user!.email!,
-          description: "description...nessto",
+          description: "",
           profilePic: userCredential.user!.photoURL ?? Constants.avatarDefault,
           uid: userCredential.user!.uid,
-          isAuthenticated: true,
+          isAuthenticated: false,
         );
         await _users.doc(userModel.uid).set(userModel.toMap());
       } else {

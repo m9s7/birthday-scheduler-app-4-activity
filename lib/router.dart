@@ -1,6 +1,7 @@
 import 'package:birthday_scheduler/features/auth/screen/login_screen.dart';
-import 'package:birthday_scheduler/features/schedule_birthday/schedule_birthday_screen.dart';
 import 'package:birthday_scheduler/features/home/screens/home_screen.dart';
+import 'package:birthday_scheduler/features/schedule_birthday/screens/schedule_birthday_screen.dart';
+import 'package:birthday_scheduler/features/schedule_birthday/screens/scheduled_birthday_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -9,5 +10,13 @@ final loggedOutRoute =
 
 final loggedInRoute = RouteMap(routes: {
   '/': (_) => const MaterialPage(child: HomeScreen()),
-  '/schedule_bday': (_) => const MaterialPage(child: ScheduleBirthdayScreen())
+  '/schedule_bday/:date': (routeData) => MaterialPage(
+          child: ScheduleBirthdayScreen(
+        initialDate: routeData.pathParameters['date']!,
+      )),
+  '/scheduled_bday/:id': (routeData) => MaterialPage(
+        child: ScheduledBirthdayScreen(
+          id: routeData.pathParameters['id']!,
+        ),
+      ),
 });

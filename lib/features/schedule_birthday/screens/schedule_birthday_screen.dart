@@ -1,4 +1,6 @@
+import 'package:birthday_scheduler/core/common/formaters.dart';
 import 'package:birthday_scheduler/core/common/loader.dart';
+import 'package:birthday_scheduler/core/utils.dart';
 import 'package:birthday_scheduler/features/schedule_birthday/controller/schedule_birthday_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,7 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 class ScheduleBirthdayScreen extends ConsumerStatefulWidget {
-  const ScheduleBirthdayScreen({super.key});
+  final String initialDate;
+  const ScheduleBirthdayScreen({super.key, required this.initialDate});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -15,9 +18,9 @@ class ScheduleBirthdayScreen extends ConsumerStatefulWidget {
 
 class _ScheduleBirthdayScreenState
     extends ConsumerState<ScheduleBirthdayScreen> {
+  // Object fields
   TimeOfDay _timeOfDay = TimeOfDay.now();
   DateTime _currentDate = DateTime.now();
-
   String _location = '';
   String _contact = '';
   String _childsName = '';
@@ -57,31 +60,96 @@ class _ScheduleBirthdayScreenState
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
-  void scheduleBirthday() {
-    print(_timeOfDay.format(context));
-    print(_currentDate.toString().substring(0, 10));
+  @override
+  void initState() {
+    super.initState();
+    _currentDate = stringToDateTime(widget.initialDate);
+  }
 
-    print('Lokacija: $_location');
-    print('Kontakt: $_contact');
-    print('Ime deteta: $_childsName');
-    print('Kolko godina puni: $_childsTurningAge');
-    print('Email: $_email');
-    print('Paket: $_package');
-    print('Cena: $_price');
-    print('Treneri:');
+  void _showTimePicker() {
+    showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        );
+      },
+    ).then((value) {
+      if (value == null) {
+        return;
+      }
+      setState(() {
+        _timeOfDay = value;
+      });
+    });
+  }
+
+  void _showDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.utc(2023, 3, 8),
+      lastDate: DateTime.now().add(const Duration(days: 365 * 2)),
+    ).then((value) {
+      if (value == null) {
+        return;
+      }
+      setState(() {
+        _currentDate = value;
+      });
+    });
+  }
+
+  void scheduleBirthday() {
+    if (_location.isEmpty) {
+      showSnackBar(context, "Unesite lokaciju.");
+      return;
+    }
+    if (_contact.isEmpty) {
+      showSnackBar(context, "Unesite kontakt roditelja.");
+      return;
+    }
+    if (_childsName.isEmpty) {
+      showSnackBar(context, "Unesite ime deteta.");
+      return;
+    }
+    if (_childsTurningAge.isEmpty) {
+      showSnackBar(context, "Unesite koliko dete puni godina.");
+      return;
+    }
+    //
+    if (_email.isEmpty) {
+      showSnackBar(context, "Unesite email roditelja.");
+      return;
+    }
+    if (_package.isEmpty) {
+      showSnackBar(context, "Unesite paket.");
+      return;
+    }
+    if (_price.isEmpty) {
+      showSnackBar(context, "Unesite cenu.");
+      return;
+    }
+
+    if (_controllersTrainers.isEmpty || _controllersTrainers[0].text.isEmpty) {
+      showSnackBar(context, "Morate uneti bar jednog trenera!");
+      return;
+    }
 
     var trainers = List<String>.filled(_controllersTrainers.length, '');
     for (int i = 0; i < _controllersTrainers.length; i++) {
       trainers[i] = _controllersTrainers[i].text.trim();
-      print('$i. ${trainers[i]}');
+      if (trainers[i].isEmpty) {
+        showSnackBar(context, "Trener ${i + 1} nije unet.");
+        return;
+      }
     }
 
-    print('Naplatio trener ${trainers[_selectedRadio!]}');
-    print('Napomena: $_note');
-
     ref.read(birthdayControllerProvider.notifier).scheduleBirthday(
-          _currentDate.toString().substring(0, 10),
-          _timeOfDay.format(context),
+          dateTimeToString(_currentDate),
+          timeOfDayTo24hFormatString(_timeOfDay),
           _location.trim(),
           _contact.trim(),
           _childsName.trim(),
@@ -97,34 +165,11 @@ class _ScheduleBirthdayScreenState
         );
   }
 
-  void _showTimePicker() {
-    showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    ).then((value) {
-      setState(() {
-        _timeOfDay = value!;
-      });
-    });
-  }
-
-  void _showDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.utc(2023, 3, 8),
-      lastDate: DateTime.now().add(const Duration(days: 365 * 2)),
-    ).then((value) {
-      setState(() {
-        _currentDate = value!;
-      });
-    });
-  }
-
   Widget _buildTextField(int index) {
     return Row(
       children: [
         Radio(
+          activeColor: Colors.blue,
           value: index,
           groupValue: _selectedRadio,
           onChanged: (value) {
@@ -161,7 +206,7 @@ class _ScheduleBirthdayScreenState
     final isLoading = ref.watch(birthdayControllerProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Zakazivanje rodjendana"),
+        title: const Text("Zakazivanje rođendana"),
         centerTitle: true,
       ),
       body: isLoading
@@ -187,8 +232,7 @@ class _ScheduleBirthdayScreenState
                             ),
                           ),
                           child: Text(
-                            DateFormat('d. MMMM y (EEEE)', 'sr_Latn')
-                                .format(_currentDate),
+                            dateTimeToStringReadable(_currentDate),
                             style: const TextStyle(fontSize: 17),
                           ),
                         ),
@@ -205,7 +249,7 @@ class _ScheduleBirthdayScreenState
                             ),
                           ),
                           child: Text(
-                            _timeOfDay.format(context).toString(),
+                            timeOfDayTo24hFormatString(_timeOfDay),
                             style: const TextStyle(fontSize: 17),
                           ),
                         ),
@@ -326,6 +370,7 @@ class _ScheduleBirthdayScreenState
                       Row(
                         children: [
                           Radio(
+                            activeColor: Colors.blue,
                             value: 0,
                             groupValue: _selectedRadio,
                             onChanged: (value) {
@@ -350,7 +395,6 @@ class _ScheduleBirthdayScreenState
                         icon: const Icon(Icons.add),
                         onPressed: () {
                           setState(() {
-                            print('When does this get called');
                             _controllersTrainers.add(TextEditingController());
                           });
                         },
@@ -371,9 +415,7 @@ class _ScheduleBirthdayScreenState
                   const SizedBox(height: 10),
                   // SUBMIT BUTTON
                   ElevatedButton(
-                    onPressed: () {
-                      scheduleBirthday();
-                    },
+                    onPressed: scheduleBirthday,
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 50),
                       shape: RoundedRectangleBorder(

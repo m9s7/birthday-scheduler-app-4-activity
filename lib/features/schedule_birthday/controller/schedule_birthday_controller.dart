@@ -6,6 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
 
+final selectedBirthdayProvider = StateProvider<Birthday?>((ref) => null);
+
+final birthdaysByDateProvider = StreamProvider.family((ref, String date) {
+  final birthdayController = ref.watch(birthdayControllerProvider.notifier);
+  return birthdayController.getScheduledBirthdaysOnDate(date);
+});
+
 final birthdayControllerProvider =
     StateNotifierProvider<BirthdayController, bool>((ref) {
   final birthdayRepository = ref.watch(birthdayRepositoryProvider);
@@ -60,6 +67,7 @@ class BirthdayController extends StateNotifier<bool> {
       price: price,
       entertainers: entertainers,
       saleCollector: saleCollector,
+      finalized: false,
       note: note,
     );
 
@@ -71,5 +79,25 @@ class BirthdayController extends StateNotifier<bool> {
       Routemaster.of(context).pop();
       showSnackBar(context, "Rodjendan uspesno zakazan!");
     });
+  }
+
+  Stream<List<Birthday>> getScheduledBirthdaysOnDate(String date) {
+    return _birthdayRepository.getScheduledBirthdaysOnDate(date);
+  }
+
+  void getSelectedBirthday(BuildContext context, String id) async {
+    state = true;
+    final bday = await _birthdayRepository.getBirthdayById(id);
+    state = false;
+    bday.fold(
+        (error) => showSnackBar(context, error.message),
+        (birthday) => _ref
+            .read(selectedBirthdayProvider.notifier)
+            .update((state) => birthday));
+    print('gotova f-ja koja treba sve da sredi');
+  }
+
+  Stream<Birthday> getBirthdayData(String id) {
+    return _birthdayRepository.getBirthdayData(id);
   }
 }

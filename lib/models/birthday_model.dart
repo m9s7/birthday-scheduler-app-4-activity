@@ -16,9 +16,8 @@ class Birthday {
   final String price;
   final List<String> entertainers;
   final String saleCollector;
-  final bool finalized = false;
+  final bool finalized;
   final String note;
-
   Birthday({
     required this.id,
     required this.createdBy,
@@ -34,6 +33,7 @@ class Birthday {
     required this.price,
     required this.entertainers,
     required this.saleCollector,
+    required this.finalized,
     required this.note,
   });
 
@@ -52,6 +52,7 @@ class Birthday {
     String? price,
     List<String>? entertainers,
     String? saleCollector,
+    bool? finalized,
     String? note,
   }) {
     return Birthday(
@@ -69,6 +70,7 @@ class Birthday {
       price: price ?? this.price,
       entertainers: entertainers ?? this.entertainers,
       saleCollector: saleCollector ?? this.saleCollector,
+      finalized: finalized ?? this.finalized,
       note: note ?? this.note,
     );
   }
@@ -89,6 +91,7 @@ class Birthday {
       'price': price,
       'entertainers': entertainers,
       'saleCollector': saleCollector,
+      'finalized': finalized,
       'note': note,
     };
   }
@@ -107,15 +110,16 @@ class Birthday {
       email: map['email'] as String,
       package: map['package'] as String,
       price: map['price'] as String,
-      entertainers: List<String>.from((map['entertainers'] as List<String>)),
+      entertainers: List<String>.from((map['entertainers'] as List<dynamic>)),
       saleCollector: map['saleCollector'] as String,
+      finalized: map['finalized'] as bool,
       note: map['note'] as String,
     );
   }
 
   @override
   String toString() {
-    return 'Birthday(id: $id, createdBy: $createdBy, createdDate: $createdDate, date: $date, time: $time, location: $location, contact: $contact, childsName: $childsName, turningAge: $turningAge, email: $email, package: $package, price: $price, entertainers: $entertainers, saleCollector: $saleCollector, note: $note)';
+    return 'Birthday(id: $id, createdBy: $createdBy, createdDate: $createdDate, date: $date, time: $time, location: $location, contact: $contact, childsName: $childsName, turningAge: $turningAge, email: $email, package: $package, price: $price, entertainers: $entertainers, saleCollector: $saleCollector, finalized: $finalized, note: $note)';
   }
 
   @override
@@ -137,6 +141,7 @@ class Birthday {
         other.price == price &&
         listEquals(other.entertainers, entertainers) &&
         other.saleCollector == saleCollector &&
+        other.finalized == finalized &&
         other.note == note;
   }
 
@@ -156,6 +161,7 @@ class Birthday {
         price.hashCode ^
         entertainers.hashCode ^
         saleCollector.hashCode ^
+        finalized.hashCode ^
         note.hashCode;
   }
 }

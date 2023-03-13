@@ -45,6 +45,9 @@ dependencies:
   fpdart: ^0.4.1
   routemaster: ^1.0.1
   intl: ^0.17.0
+  url_launcher: ^6.1.10
+  share_plus: ^6.3.1
+  
 
 dev_dependencies:
   flutter_test:
