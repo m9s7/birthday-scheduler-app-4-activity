@@ -51,6 +51,17 @@ class AuthRepository {
           .collection(FirebaseConstants.authorizedUsersCollection)
           .where('email', isEqualTo: googleUser?.email)
           .get();
+
+      final QuerySnapshot snapshotAll = await FirebaseFirestore.instance
+          .collection(FirebaseConstants.authorizedUsersCollection)
+          .get();
+
+      for (var doc in snapshot.docs) {
+        print('-"${doc.data()}"');
+      }
+      for (var doc in snapshotAll.docs) {
+        print(doc.data());
+      }
       if (snapshot.docs.isEmpty) {
         await _googleSignIn.signOut();
         return left(Failure('Niste autorizovani da koristite ovu aplikaciju.'));
@@ -61,7 +72,13 @@ class AuthRepository {
 
       UserModel userModel;
 
-      if (userCredential.additionalUserInfo!.isNewUser) {
+      final userInDB = await FirebaseFirestore.instance
+          .doc('users/${userCredential.user!.uid}')
+          .get();
+
+      if (userInDB.exists) {
+        userModel = await getUserData(userCredential.user!.uid).first;
+      } else {
         userModel = UserModel(
           name: userCredential.user!.displayName ?? "No Name",
           email: userCredential.user!.email!,
@@ -71,13 +88,14 @@ class AuthRepository {
           isAuthenticated: false,
         );
         await _users.doc(userModel.uid).set(userModel.toMap());
-      } else {
-        userModel = await getUserData(userCredential.user!.uid).first;
       }
+
       return right(userModel);
     } on FirebaseException catch (e) {
       throw e.message!;
     } catch (e) {
+      await _googleSignIn.signOut();
+      await _auth.signOut();
       return left(Failure(e.toString()));
     }
   }
